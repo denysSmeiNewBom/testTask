@@ -9,4 +9,6 @@ public interface UserService {
     Optional<User> getByPhone(String phone);
 
     Optional<User>  getByEmail(String email);
+
+    boolean isUserWithPhoneNumberOrEmail(String phone, String email);
 }

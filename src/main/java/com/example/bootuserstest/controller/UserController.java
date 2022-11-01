@@ -23,7 +23,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/add")
-    public User addNewUser(@RequestBody @Valid User user, HttpServletRequest request) {
+    public User addNewUser(@RequestBody @Valid User user) {
+        UserValidator.validate(user,userService);
         UserUtils.dateRezolve(user);
         userService.addUser(user);
         return user;
@@ -31,7 +32,7 @@ public class UserController {
 
     @GetMapping(value = "/get/by-phone")
     public User getUserByPhone(@RequestParam @Valid String phoneNumber, HttpServletRequest request) {
-        UserValidator.phoneNumberValidate(phoneNumber, request);
+        UserValidator.phoneNumberValidate(phoneNumber);
         return userService.getByPhone(phoneNumber).orElseThrow(
                 () ->{
                     request.setAttribute("customErrorCode", 1003);
@@ -42,7 +43,7 @@ public class UserController {
 
     @GetMapping(value = "/get/by-email")
     public User getUserByEmail(@RequestParam @Valid String email, HttpServletRequest request) {
-        UserValidator.emailValidate(email, request);
+        UserValidator.emailValidate(email);
         return userService.getByEmail(email).orElseThrow(
                 () ->{
                     request.setAttribute("customErrorCode", 1003);

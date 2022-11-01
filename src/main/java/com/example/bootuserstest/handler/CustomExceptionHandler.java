@@ -49,11 +49,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(parseToJson(ex,1004), statusCode);
     }
 
-    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
-    public final ResponseEntity<Object> handleAllExceptions(org.springframework.dao.DataIntegrityViolationException ex, WebRequest request) {
-        Exception exception = ExceptionUtils.getExceptionForAlreadyUsedCredentials(ex);
+    @ExceptionHandler(CredentialAreAlreadyInUseException.class)
+    public final ResponseEntity<Object> handleAllExceptions(CredentialAreAlreadyInUseException ex, WebRequest request) {
         HttpStatus statusCode = HttpStatus.BAD_REQUEST;
-        return new ResponseEntity(parseToJson(exception,1007), statusCode);
+        return new ResponseEntity(parseToJson(ex,1019), statusCode);
     }
 
     @Override
