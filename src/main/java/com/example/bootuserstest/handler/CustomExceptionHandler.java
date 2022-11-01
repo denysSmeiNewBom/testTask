@@ -4,7 +4,6 @@ import com.example.bootuserstest.exception.CredentialAreAlreadyInUseException;
 import com.example.bootuserstest.exception.DataProcessingException;
 import com.example.bootuserstest.exception.NoSuchFieldInTableException;
 import com.example.bootuserstest.exception.NoSuchOperatorException;
-import javax.validation.ValidationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;;
