@@ -1,9 +1,7 @@
 package com.example.bootuserstest.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,29 +22,29 @@ public class User {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "first_name", nullable = false, columnDefinition = "TEST")
+    @Column(name = "first_name", nullable = false)
     @NotBlank
     @NotNull
     private String firstName;
 
-    @Column(name = "second_name", nullable = false, columnDefinition = "TEST")
+    @Column(name = "second_name", nullable = false)
     @NotBlank
     @NotNull
     private String secondName;
 
-    @Column(name = "phone_number", nullable = false, columnDefinition = "TEST")
+    @Column(name = "phone_number", nullable = false)
     @NotBlank
     @NotNull
-    @Pattern(regexp = "^380\\d{9}$")
+    @Pattern(regexp = ".+\\d{9}$")
     private String phoneNumber;
 
-    @Column(name = "email", nullable = false, columnDefinition = "TEST")
+    @Column(name = "email", nullable = false)
     @Email
     @NotBlank
     @NotNull
     private String email;
 
-    @Column(name = "app", nullable = false, columnDefinition = "TEST")
+    @Column(name = "app", nullable = false)
     @NotBlank
     @NotNull
     private String app;

@@ -1,11 +1,12 @@
 package com.example.bootuserstest.services;
 
 import com.example.bootuserstest.model.User;
+import java.util.Optional;
 
 public interface UserService {
     User addUser(User user);
 
-    User getByPhone(String phone);
+    Optional<User> getByPhone(String phone);
 
-    User getByEmail(String email);
+    Optional<User>  getByEmail(String email);
 }

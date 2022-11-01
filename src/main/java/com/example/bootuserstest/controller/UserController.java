@@ -1,8 +1,12 @@
 package com.example.bootuserstest.controller;
 
+import com.example.bootuserstest.exception.CredentialAreAlreadyInUseException;
+import com.example.bootuserstest.exception.DataProcessingException;
 import com.example.bootuserstest.model.User;
 import com.example.bootuserstest.services.UserService;
 import com.example.bootuserstest.utils.UserUtils;
+import com.example.bootuserstest.utils.UserValidator;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,19 +23,36 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/add")
-    public User addNewUser(@RequestBody @Valid User user) {
+    public User addNewUser(@RequestBody @Valid User user, HttpServletRequest request) {
         UserUtils.dateRezolve(user);
-        userService.addUser(user);
+        try{
+            userService.addUser(user);
+        }catch (CredentialAreAlreadyInUseException exception){
+            request.setAttribute("customErrorCode", 400);
+            throw new DataProcessingException(exception.getMessage());
+        }
         return user;
     }
 
     @GetMapping(value = "/get/by-phone")
-    public User getUserByPhone(@RequestParam @Valid String phoneNumber) {
-        return userService.getByPhone(phoneNumber);
+    public User getUserByPhone(@RequestParam @Valid String phoneNumber, HttpServletRequest request) {
+        UserValidator.phoneNumberValidate(phoneNumber, request);
+        return userService.getByPhone(phoneNumber).orElseThrow(
+                () ->{
+                    request.setAttribute("customErrorCode", 400);
+                    throw new DataProcessingException("Can't get user by phone number: " + phoneNumber);
+                }
+        );
     }
 
     @GetMapping(value = "/get/by-email")
-    public User getUserByEmail(@RequestParam @Valid String email) {
-        return userService.getByEmail(email);
+    public User getUserByEmail(@RequestParam @Valid String email, HttpServletRequest request) {
+        UserValidator.emailValidate(email, request);
+        return userService.getByEmail(email).orElseThrow(
+                () ->{
+                    request.setAttribute("customErrorCode", 400);
+                    throw new DataProcessingException("Can't get user by email: " + email);
+                }
+        );
     }
 }
