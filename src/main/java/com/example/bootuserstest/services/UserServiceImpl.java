@@ -14,20 +14,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User addUser(User user){
-        try {
-           userRepository.save(user);
-        }catch (org.springframework.dao.DataIntegrityViolationException exception){
-            if (ExceptionUtils.isAlreadyExistedCredentials(exception)){
-                String exceptionMessage = exception.getRootCause().getMessage();
-                String field = "'" + exceptionMessage.substring(exceptionMessage.indexOf("users.") + 6);
-                throw new CredentialAreAlreadyInUseException("There is already a user with such credentials for field: " +
-                        UserCred.getUserByField(field).getValueInJson());
-            }
-        }
-        return user;
+    public User addUser(User user) {
+        return userRepository.save(user);
     }
-
 
     @Override
     public Optional<User> getByPhone(String phone) {
@@ -35,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User>  getByEmail(String email) {
+    public Optional<User> getByEmail(String email) {
         return userRepository.findStudentByEmail(email);
     }
 }

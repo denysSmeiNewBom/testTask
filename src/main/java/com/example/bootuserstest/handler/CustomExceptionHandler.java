@@ -4,6 +4,8 @@ import com.example.bootuserstest.exception.CredentialAreAlreadyInUseException;
 import com.example.bootuserstest.exception.DataProcessingException;
 import com.example.bootuserstest.exception.NoSuchFieldInTableException;
 import com.example.bootuserstest.exception.NoSuchOperatorException;
+import com.example.bootuserstest.utils.ExceptionUtils;
+import com.example.bootuserstest.utils.UserCred;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;;
@@ -47,10 +49,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(parseToJson(ex,1004), statusCode);
     }
 
-    @ExceptionHandler(CredentialAreAlreadyInUseException.class)
-    public final ResponseEntity<Object> handleAllExceptions(CredentialAreAlreadyInUseException ex, WebRequest request) {
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public final ResponseEntity<Object> handleAllExceptions(org.springframework.dao.DataIntegrityViolationException ex, WebRequest request) {
+        Exception exception = ExceptionUtils.getExceptionForAlreadyUsedCredentials(ex);
         HttpStatus statusCode = HttpStatus.BAD_REQUEST;
-        return new ResponseEntity(parseToJson(ex,1007), statusCode);
+        return new ResponseEntity(parseToJson(exception,1007), statusCode);
     }
 
     @Override
