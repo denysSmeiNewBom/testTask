@@ -25,12 +25,7 @@ public class UserController {
     @PostMapping(value = "/add")
     public User addNewUser(@RequestBody @Valid User user, HttpServletRequest request) {
         UserUtils.dateRezolve(user);
-        try{
-            userService.addUser(user);
-        }catch (CredentialAreAlreadyInUseException exception){
-            request.setAttribute("customErrorCode", 400);
-            throw new DataProcessingException(exception.getMessage());
-        }
+        userService.addUser(user);
         return user;
     }
 
@@ -39,8 +34,8 @@ public class UserController {
         UserValidator.phoneNumberValidate(phoneNumber, request);
         return userService.getByPhone(phoneNumber).orElseThrow(
                 () ->{
-                    request.setAttribute("customErrorCode", 400);
-                    throw new DataProcessingException("Can't get user by phone number: " + phoneNumber);
+                    request.setAttribute("customErrorCode", 1003);
+                    throw new DataProcessingException("There is no user with phone number: " + phoneNumber);
                 }
         );
     }
@@ -50,8 +45,8 @@ public class UserController {
         UserValidator.emailValidate(email, request);
         return userService.getByEmail(email).orElseThrow(
                 () ->{
-                    request.setAttribute("customErrorCode", 400);
-                    throw new DataProcessingException("Can't get user by email: " + email);
+                    request.setAttribute("customErrorCode", 1003);
+                    throw new DataProcessingException("There is no user with email: " + email);
                 }
         );
     }

@@ -39,7 +39,7 @@ public class User {
     private String phoneNumber;
 
     @Column(name = "email", nullable = false)
-    @Email
+    @Email(message = "Incorrect form of email")
     @NotBlank
     @NotNull
     private String email;

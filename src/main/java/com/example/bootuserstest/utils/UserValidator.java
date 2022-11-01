@@ -1,5 +1,6 @@
 package com.example.bootuserstest.utils;
 
+import com.example.bootuserstest.exception.NoSuchOperatorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 
@@ -16,8 +17,7 @@ public class UserValidator {
                     return;
                 }
             }
-            request.setAttribute("customErrorCode", 400);
-            throw new ValidationException("Operator with code {" + operatorCode + "} is not supported");
+            throw new NoSuchOperatorException("Operator with code {" + operatorCode + "} is not supported");
         }
         throw new ValidationException("Incorrect phone number. Must be {operator code without \"+\" sign}---- --- ---");
     }
@@ -26,7 +26,6 @@ public class UserValidator {
         if(email != null && email.matches(EMAIL_PATTERN)){
            return;
         }
-        request.setAttribute("customErrorCode", 400);
         throw new ValidationException("Incorrect email. Must be like: " + EMAIL_PATTERN);
     }
 }
