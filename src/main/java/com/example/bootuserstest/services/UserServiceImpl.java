@@ -3,8 +3,6 @@ package com.example.bootuserstest.services;
 import com.example.bootuserstest.exception.CredentialAreAlreadyInUseException;
 import com.example.bootuserstest.model.User;
 import com.example.bootuserstest.repository.UserRepository;
-import com.example.bootuserstest.utils.ExceptionUtils;
-import com.example.bootuserstest.utils.UserCred;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +27,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isUserWithPhoneNumberOrEmail(String phone, String email) {
-        return userRepository.findByPhoneNumberOrEmail(phone, email).isPresent();
+    public User getUserWithPhoneNumberOrEmail(String phone, String email) {
+        Optional<User> userOptional = userRepository.findByPhoneNumberOrEmail(phone, email);
+        User user = null;
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+            if (userOptional.get().getEmail().equals(email)) {
+                throw new CredentialAreAlreadyInUseException("Email is already in use");
+            }
+            if (userOptional.get().getPhoneNumber().equals(phone)) {
+                throw new CredentialAreAlreadyInUseException("Phone number is already in use");
+            }
+        }
+        return user;
     }
 }

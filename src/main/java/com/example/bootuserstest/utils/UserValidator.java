@@ -5,6 +5,7 @@ import com.example.bootuserstest.exception.NoSuchOperatorException;
 import com.example.bootuserstest.model.User;
 import com.example.bootuserstest.repository.UserRepository;
 import com.example.bootuserstest.services.UserService;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +15,9 @@ public class UserValidator {
     public static final String PHONE_CODE_PATTERN = "\\d{9}$";
     public static final String EMAIL_PATTERN = "^(.+)@(\\S+)$";
 
-    public static void validate(User user, UserService userService) {
+    public static void validate(User user) {
         phoneNumberValidate(user.getPhoneNumber());
-        emailValidate(user.getEmail());
-        uniqueUserCredentials(user, userService);
-    }
-
-    public static void uniqueUserCredentials(User user, UserService userService) {
-        if (userService.isUserWithPhoneNumberOrEmail(user.getPhoneNumber(), user.getEmail())) {
-            throw new CredentialAreAlreadyInUseException("Email or phone number are already in use");
-        }
+        emailValidate(user.getEmail());;
     }
 
     public static void phoneNumberValidate(String phone) {

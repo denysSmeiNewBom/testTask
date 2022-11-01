@@ -1,6 +1,5 @@
 package com.example.bootuserstest.controller;
 
-import com.example.bootuserstest.exception.CredentialAreAlreadyInUseException;
 import com.example.bootuserstest.exception.DataProcessingException;
 import com.example.bootuserstest.model.User;
 import com.example.bootuserstest.services.UserService;
@@ -24,7 +23,8 @@ public class UserController {
 
     @PostMapping(value = "/add")
     public User addNewUser(@RequestBody @Valid User user) {
-        UserValidator.validate(user,userService);
+        UserValidator.validate(user);
+        User existedUser = userService.getUserWithPhoneNumberOrEmail(user.getPhoneNumber(), user.getEmail());
         UserUtils.dateRezolve(user);
         userService.addUser(user);
         return user;
