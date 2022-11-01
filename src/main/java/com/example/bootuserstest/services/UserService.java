@@ -10,5 +10,5 @@ public interface UserService {
 
     Optional<User>  getByEmail(String email);
 
-    User getUserWithPhoneNumberOrEmail(String phone, String email);
+    void validateUserWithPhoneNumberOrEmail(String phone, String email);
 }

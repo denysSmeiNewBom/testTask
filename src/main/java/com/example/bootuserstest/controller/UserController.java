@@ -24,7 +24,7 @@ public class UserController {
     @PostMapping(value = "/add")
     public User addNewUser(@RequestBody @Valid User user) {
         UserValidator.validate(user);
-        User existedUser = userService.getUserWithPhoneNumberOrEmail(user.getPhoneNumber(), user.getEmail());
+        userService.validateUserWithPhoneNumberOrEmail(user.getPhoneNumber(), user.getEmail());
         UserUtils.dateRezolve(user);
         userService.addUser(user);
         return user;

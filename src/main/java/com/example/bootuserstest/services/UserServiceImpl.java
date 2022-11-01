@@ -27,11 +27,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserWithPhoneNumberOrEmail(String phone, String email) {
+    public void validateUserWithPhoneNumberOrEmail(String phone, String email) {
         Optional<User> userOptional = userRepository.findByPhoneNumberOrEmail(phone, email);
-        User user = null;
         if (userOptional.isPresent()) {
-            user = userOptional.get();
+            User user = userOptional.get();
             if (userOptional.get().getEmail().equals(email)) {
                 throw new CredentialAreAlreadyInUseException("Email is already in use");
             }
@@ -39,6 +38,5 @@ public class UserServiceImpl implements UserService {
                 throw new CredentialAreAlreadyInUseException("Phone number is already in use");
             }
         }
-        return user;
     }
 }
